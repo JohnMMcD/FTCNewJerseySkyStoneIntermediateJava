@@ -1,3 +1,7 @@
+## PRE-NOTICE
+
+This is a copy of https://github.com/FIRST-Tech-Challenge/SkyStone for training purposes. Please use https://github.com/FIRST-Tech-Challenge/SkyStone for any issue or development work
+
 ## NOTICE
 
 This repository contains v5.0 of the FTC SDK.  No further versions will pushed to https://github.com/ftctechnh/ftc_app.
