@@ -107,6 +107,8 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Send telemetry message to alert driver that we are calibrating;
         telemetry.addData(">", "Calibrating Gyro");    //
@@ -125,6 +127,8 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
 
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (Display Gyro value), and reset gyro before we move..
         while (!isStarted()) {
@@ -188,14 +192,22 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
             // Set Target and Turn On RUN_TO_POSITION
             robot.leftDrive.setTargetPosition(newLeftTarget);
             robot.rightDrive.setTargetPosition(newRightTarget);
+            // TODO: Check turn radius for rear wheels and adjust target position as necessary
+            robot.leftRearDrive.setTargetPosition(newLeftTarget);
+            robot.rightRearDrive.setTargetPosition(newRightTarget);
+
 
             robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
             robot.leftDrive.setPower(speed);
             robot.rightDrive.setPower(speed);
+            robot.leftRearDrive.setPower(speed);
+            robot.rightRearDrive.setPower(speed);
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
@@ -222,12 +234,16 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
 
                 robot.leftDrive.setPower(leftSpeed);
                 robot.rightDrive.setPower(rightSpeed);
+                robot.leftRearDrive.setPower(leftSpeed);
+                robot.rightRearDrive.setPower(rightSpeed);
 
                 // Display drive status for the driver.
                 telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
                 telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual",  "%7d:%7d",      robot.leftDrive.getCurrentPosition(),
-                                                             robot.rightDrive.getCurrentPosition());
+                telemetry.addData("Actual",  "%7d:%7d:%7d:%7d",      robot.leftDrive.getCurrentPosition(),
+                                                            robot.rightDrive.getCurrentPosition(),
+                                                            robot.leftRearDrive.getCurrentPosition(),
+                                                            robot.rightRearDrive.getCurrentPosition());
                 telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
                 telemetry.update();
             }
@@ -235,10 +251,15 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
             // Stop all motion;
             robot.leftDrive.setPower(0);
             robot.rightDrive.setPower(0);
+            robot.leftRearDrive.setPower(0);
+            robot.rightRearDrive.setPower(0);
 
             // Turn off RUN_TO_POSITION
             robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         }
     }
 
